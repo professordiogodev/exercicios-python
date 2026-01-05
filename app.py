@@ -20,13 +20,42 @@ raquel_hp -= diogo_attack # Passas a ter 45 de hp
 print("Raquel ataca Diogo!")
 diogo_hp -= raquel_attack # Passas a ter 45 de hp
 
-# Resolução Ex 1:
+
+# Lógica do Game Over:
+if diogo_hp < 0:
+    print("Diogo Defeated!")
+elif raquel_hp < 0:
+    print("Raquel Defeated!")
+else:
+    print("O jogo continua... (ambos vivos)")
 
 
 
+print(f"Raquel ficou com {raquel_hp} pontos de vida!")
+print(f"Diogo ficou com {diogo_hp} pontos de vida!")
 
 
+# 🟣 Para cada exercício:
+# 🟣 Até 15 minutos a tentar, se não der, pedir ajuda da AI
 
-# Ex 1 - Mostrar Resultados (Raquel ficou com x pontos de vida!)
-# Ex 2 - Colocar a defesa ao barulho:
-## Exemplo: Se diogo atacar Raquel, vai ser 50 - (5 - 5), vai dar 0 de dano.
+# ⚠️ Ex 3 - Problema a resolver: Se a defesa for maior do que o ataque, o adversário cura-se... 🥶 Devia só dar 0 de dano
+## Podes resolver isto utilizando um if, por exemplo:
+###### Se a defesa for maior do que o ataque, retirar apenas 0
+###### Se a defesa for menor que o ataque, retirar (ataque - defesa) - é o que a gente já tem
+
+# Ex 4 - Os jogadores vão atacar-se de novo.
+# O Diogo dá um ataque normal.
+# A Raquel dá um ataque *crítico* - dá 2x o seu dano
+
+
+# Ex 4 - Os jogadores vão atacar-se de novo.
+# O Diogo dá um ataque normal.
+# A Raquel dá um ataque *crítico* - dá 2x o seu dano
+
+
+# Ex 5 - Os jogadores vão atacar-se de novo.
+# O Diogo dá um ataque normal.
+# A Raquel dá um spell que se cura 12 pontos de vida e retira 1 ponto de *ataque* ao Diogo.
+
+
+# Ex maximus brutal: Implementar o TIE (ambos se derrotaram, empate)
