@@ -4,38 +4,97 @@
 
 # Inicializar Jogadores
 diogo = {
+    "name": "Diogo",
     "hp": 40,
     "attack": 5,
     "defense": 3,
     "mana" : 50
 }
 
+def heal_spell(origin, target):
+    #Raquel Spell
+    origin["hp"] += 12
+    origin["mana"] -= 5
+    target["attack"] -= 1
+
+    print(f"{origin["name"]} ficou com {origin["hp"]} pontos de vida e {origin["mana"]} de mana!")
+    print(f"{target["name"]} ficou com {target["hp"]} pontos de vida e {target["attack"]} pontos de ataque!")
+
 raquel = {
+    "name": "Raquel",
     "hp": 50,
     "attack": 3,
     "defense": 5,
     "critatk": 3 * 2,
-    "mana" : 50
+    "mana" : 50,
+    "spell": heal_spell
 }
 
+def attack(source, target):
+    src = source["name"]
+    trgt = target["name"]
+    
+    # Lógica do Ataque
+    print(f"{src} ataca {trgt}!")
+    target["hp"] -= source["attack"]
+    print(f"{trgt} ficou com {target["hp"]} pontos de vida!")
+
+# Code Smell - estamos a violar o princípio DRY
+def crit_attack(source, target):
+    src = source["name"]
+    trgt = target["name"]
+    
+    # Lógica do Ataque
+    print(f"{src} ataca {trgt}!")
+    target["hp"] -= source["critatk"] # desta vez, raquel ataca com critak em vez de ataque
+    print(f"{trgt} ficou com {target["hp"]} pontos de vida!")
+
+def is_gameover(player1, player2):
+
+    p1 = player1["name"]
+    p2 = player2["name"]
+    p1_hp = player1["hp"]
+    p2_hp = player2["hp"]
+
+    # Lógica do Game Over:
+    if p1_hp <= 0 and p2_hp <= 0:
+        print("Tie!")
+    elif player1["hp"] < 0:
+        print(p1 + " Defeated!")
+    elif player2["hp"] < 0:
+        print(p2 + " Defeated!")
+    else:
+        print("O jogo continua... (ambos vivos)")
+
+
 # Turno 1
-print("Diogo ataca Raquel!")
-raquel["hp"] -= diogo["attack"] # Passas a ter 45 de hp
+attack(diogo, raquel) # Passas a ter 45 de hp
+attack(raquel, diogo) # Passa a ter 37 de hp
+is_gameover(diogo, raquel)
+print("------------------------")
 
-print("Raquel ataca Diogo!")
-diogo["hp"] -= raquel["attack"] # Passa a ter 37 de hp
+# Turno 2
 
-# Lógica do Game Over:
-if diogo["hp"] < 0:
-    print("Diogo Defeated!")
-elif raquel["hp"] < 0:
-    print("Raquel Defeated!")
-else:
-    print("O jogo continua... (ambos vivos)")
+attack(diogo, raquel)
+crit_attack(raquel, diogo)
+is_gameover(diogo, raquel)
+print("------------------------")
 
-print(f"Raquel ficou com {raquel["hp"]} pontos de vida!")
-print(f"Diogo ficou com {diogo["hp"]} pontos de vida!")
+# Turno 3
 
+attack(diogo,raquel)
+raquel["heal_spell"](raquel, diogo)
+is_gameover(diogo, raquel)
+print("------------------------")
+
+
+
+
+
+
+
+"""
+Todo - Implementar lógica dos pontos de defesa
 # Cálculo do ataque em função da defesa
 if diogo["defense"] > raquel["attack"]:
     diogo["hp"] -= 0
@@ -49,43 +108,4 @@ elif raquel["defense"] < diogo["attack"]:
 
 print(f"Raquel ficou com {raquel["hp"]} pontos de vida!")
 print(f"Diogo ficou com {diogo["hp"]} pontos de vida!")
-
-# Ex 4 - Os jogadores vão atacar-se de novo.
-# O Diogo dá um ataque normal.
-# A Raquel dá um ataque *crítico* - dá 2x o seu dano
-
-# Diogo Ataca Raquel
-print("Diogo ataca Raquel!")
-raquel["hp"] -= diogo["attack"]
-
-print("Raquel acerta um ataque crítico em Diogo")
-diogo["hp"] -= raquel["critatk"]
-
-print(f"Raquel ficou com {raquel["hp"]} pontos de vida!")
-print(f"Diogo ficou com {diogo["hp"]} pontos de vida!")
-
-# Ex 5 - Os jogadores vão atacar-se de novo.
-# O Diogo dá um ataque normal.
-# A Raquel dá um spell que se cura 12 pontos de vida e retira 1 ponto de *ataque* ao Diogo.
-
-print("Diogo ataca Raquel!")
-raquel["hp"] -= diogo["attack"]
-
-print(f"0 hp de Raquel agora é de {raquel["hp"]}")
-
-print("Raquel utiliza um spell")
-
-#Raquel Spell
-raquel["hp"] += 12
-raquel["mana"] -= 5
-diogo["attack"] -= 1
-
-print(f"Raquel ficou com {raquel["hp"]} pontos de vida e {raquel["mana"]} de mana!")
-print(f"Diogo ficou com {diogo["hp"]} pontos de vida e {diogo["attack"]} pontos de ataque!")
-
-# Ex maximus brutal: Implementar o TIE (ambos se derrotaram, empate)
-
-if diogo["hp"] <= 0 and raquel["hp"] <= 0:
-    print("Empate!")
-else:
-    print("O jogo continua... (ambos vivos)")
+"""
