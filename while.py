@@ -1,21 +1,41 @@
 # No turno da raquel, se ela tiver menos de 20 de vida, curar-se com 100 pontos de vida.
-diogo_hp = 60
-raquel_hp = 50
-diogo_attack = 3
-raquel_attack = 4
 
-while diogo_hp > 0 and raquel_hp > 0:
+#Jogadores
+
+diogo = {
+    "name": "Diogo",
+    "hp": 60,
+    "attack": 3
+}
+
+raquel = {
+    "name": "Raquel",
+    "hp": 50,
+    "attack": 4
+}
+
+def attack(source, target):
+    src = source["name"]
+    trgt = target["name"]
+
+    target["hp"] -= source["attack"]
+    print(f"{src} atacou {trgt} que ficou com {target['hp']} pontos de vida!")
+
+while diogo["hp"] > 0 and raquel["hp"] > 0:
     # Turno do Diogo - diogo ataca raquel
-    raquel_hp -= diogo_attack
-    print(f"Diogo atacou Raquel, que ficou com {raquel_hp}")
+    attack(diogo, raquel)
+
     # Turno da Raquel - raquel ataca diogo
-    diogo_hp -= raquel_attack
-    print(f"Raquel atacou Diogo, que ficou com {diogo_hp}")
+    if raquel["hp"] < 20:
+        raquel["hp"] += 100
+    else:
+        attack(raquel, diogo)
+    
 
 # Lógica do Game Over:
-if diogo_hp <= 0 and raquel_hp <= 0:
+if diogo["hp"] <= 0 and raquel["hp"] <= 0:
     print("Tie!")
-elif diogo_hp <= 0:
+elif diogo["hp"] <= 0:
     print("Diogo Defeated!")
-elif raquel_hp <= 0:
+elif raquel["hp"] <= 0:
     print("Raquel Defeated!")
