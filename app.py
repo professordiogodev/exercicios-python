@@ -6,14 +6,16 @@
 diogo = {
     "hp": 40,
     "attack": 5,
-    "defense": 3
+    "defense": 3,
+    "mana" : 50
 }
 
 raquel = {
     "hp": 50,
     "attack": 3,
     "defense": 5,
-    "critatk": 3 * 2
+    "critatk": 3 * 2,
+    "mana" : 50
 }
 
 # Turno 1
@@ -75,9 +77,10 @@ print("Raquel utiliza um spell")
 
 #Raquel Spell
 raquel["hp"] += 12
+raquel["mana"] -= 5
 diogo["attack"] -= 1
 
-print(f"Raquel ficou com {raquel["hp"]} pontos de vida!")
+print(f"Raquel ficou com {raquel["hp"]} pontos de vida e {raquel["mana"]} de mana!")
 print(f"Diogo ficou com {diogo["hp"]} pontos de vida e {diogo["attack"]} pontos de ataque!")
 
 # Ex maximus brutal: Implementar o TIE (ambos se derrotaram, empate)
