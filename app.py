@@ -1,61 +1,88 @@
-# Criar stats para dois personagens
-# Fazer um personagem atacar outro (sem funções)
+# Exercício:
+# Os jogadores agora têm de ter mana
+# Raquel, ao utilizar o spell, vai perder 5 de mana
 
-# Variáveis para Diogo
-diogo_hp = 40
-diogo_attack = 5
-diogo_defense = 3
+# Inicializar Jogadores
+diogo = {
+    "hp": 40,
+    "attack": 5,
+    "defense": 3
+}
 
-# Variáveis para Raquel
-raquel_hp = 50
-raquel_attack = 3
-raquel_defense = 5
+raquel = {
+    "hp": 50,
+    "attack": 3,
+    "defense": 5,
+    "critatk": 3 * 2
+}
 
-# Resolução Ex 2:
-# Diogo Ataca Raquel
+# Turno 1
 print("Diogo ataca Raquel!")
-raquel_hp -= diogo_attack # Passas a ter 45 de hp
+raquel["hp"] -= diogo["attack"] # Passas a ter 45 de hp
 
-# Raquel Ataca Diogo
 print("Raquel ataca Diogo!")
-diogo_hp -= raquel_attack # Passas a ter 45 de hp
-
+diogo["hp"] -= raquel["attack"] # Passa a ter 37 de hp
 
 # Lógica do Game Over:
-if diogo_hp < 0:
+if diogo["hp"] < 0:
     print("Diogo Defeated!")
-elif raquel_hp < 0:
+elif raquel["hp"] < 0:
     print("Raquel Defeated!")
 else:
     print("O jogo continua... (ambos vivos)")
 
+print(f"Raquel ficou com {raquel["hp"]} pontos de vida!")
+print(f"Diogo ficou com {diogo["hp"]} pontos de vida!")
 
+# Cálculo do ataque em função da defesa
+if diogo["defense"] > raquel["attack"]:
+    diogo["hp"] -= 0
+elif diogo["defense"] < raquel["attack"]:
+    diogo["hp"] -= (raquel["attack"] - diogo["defense"])
 
-print(f"Raquel ficou com {raquel_hp} pontos de vida!")
-print(f"Diogo ficou com {diogo_hp} pontos de vida!")
+if raquel["defense"] > diogo["attack"]:
+    raquel["hp"] -= 0
+elif raquel["defense"] < diogo["attack"]:
+    raquel["hp"] -= (diogo["attack"] - raquel["defense"])
 
-
-# 🟣 Para cada exercício:
-# 🟣 Até 15 minutos a tentar, se não der, pedir ajuda da AI
-
-# ⚠️ Ex 3 - Problema a resolver: Se a defesa for maior do que o ataque, o adversário cura-se... 🥶 Devia só dar 0 de dano
-## Podes resolver isto utilizando um if, por exemplo:
-###### Se a defesa for maior do que o ataque, retirar apenas 0
-###### Se a defesa for menor que o ataque, retirar (ataque - defesa) - é o que a gente já tem
-
-# Ex 4 - Os jogadores vão atacar-se de novo.
-# O Diogo dá um ataque normal.
-# A Raquel dá um ataque *crítico* - dá 2x o seu dano
-
+print(f"Raquel ficou com {raquel["hp"]} pontos de vida!")
+print(f"Diogo ficou com {diogo["hp"]} pontos de vida!")
 
 # Ex 4 - Os jogadores vão atacar-se de novo.
 # O Diogo dá um ataque normal.
 # A Raquel dá um ataque *crítico* - dá 2x o seu dano
 
+# Diogo Ataca Raquel
+print("Diogo ataca Raquel!")
+raquel["hp"] -= diogo["attack"]
+
+print("Raquel acerta um ataque crítico em Diogo")
+diogo["hp"] -= raquel["critatk"]
+
+print(f"Raquel ficou com {raquel["hp"]} pontos de vida!")
+print(f"Diogo ficou com {diogo["hp"]} pontos de vida!")
 
 # Ex 5 - Os jogadores vão atacar-se de novo.
 # O Diogo dá um ataque normal.
 # A Raquel dá um spell que se cura 12 pontos de vida e retira 1 ponto de *ataque* ao Diogo.
 
+print("Diogo ataca Raquel!")
+raquel["hp"] -= diogo["attack"]
+
+print(f"0 hp de Raquel agora é de {raquel["hp"]}")
+
+print("Raquel utiliza um spell")
+
+#Raquel Spell
+raquel["hp"] += 12
+diogo["attack"] -= 1
+
+print(f"Raquel ficou com {raquel["hp"]} pontos de vida!")
+print(f"Diogo ficou com {diogo["hp"]} pontos de vida e {diogo["attack"]} pontos de ataque!")
 
 # Ex maximus brutal: Implementar o TIE (ambos se derrotaram, empate)
+
+if diogo["hp"] <= 0 and raquel["hp"] <= 0:
+    print("Empate!")
+else:
+    print("O jogo continua... (ambos vivos)")
