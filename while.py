@@ -10,7 +10,9 @@ diogo = {
 raquel = {
     "name": "Raquel",
     "hp": 50,
+    "max_hp": 50,
     "attack": 4,
+    "max_attack": 4,
     "gold": 0
 }
 
@@ -26,6 +28,20 @@ pixie = {
     "hp": 20,
     "attack": 3,
     "gold": 7
+}
+
+goblin = {
+    "name": "Goblin",
+    "hp": 30,
+    "attack": 4,
+    "gold": 10
+}
+
+troll = {
+    "name": "Troll",
+    "hp": 50,
+    "attack": 6,
+    "gold": 20
 }
 
 # ... outros monstros ...
@@ -68,25 +84,54 @@ while not is_gameover(raquel, slime):
 
 # Nível 2
 # A pixie cura-se 2 se tiver menos de 5 pontos de vida
-while not is_gameover(raquel, slime):
+while not is_gameover(raquel, pixie):
     attack(raquel, pixie)
 
     # Lógica? não é só atacar...
     attack(pixie, raquel)
 
+    if pixie["hp"] < 5:
+            pixie["hp"] += 2
+            print("Pixie curou-se +2 HP")
+
+raquel["gold"] += pixie["gold"]
+print("Gold de Raquel:", raquel["gold"])
 
 # Nível 3
 # Raquel vs Goblin
 # O goblin dá ataque crítico a cada dois turnos
 
+while not is_gameover(raquel, goblin):
+    attack(raquel, goblin)
+
+    raquel["gold"] += goblin["gold"]
+
 
 # No fim do Nível 3, recuperar a vida da Raquel para nível máximo e subir de nível (+1 atk, +5 hp)
 
+raquel["max_hp"] += 5
+raquel["attack"] += 1
+raquel["max_attack"] = raquel["attack"]
+raquel["hp"] = raquel["max_hp"]
+
+print("Raquel subiu de nível!")
 
 # Nível 4
 # Raquel vs Troll
 # O Troll reduz o ataque de raquel em 1 a cada turno
 # No final da luta, não esquecer de retornar o ataque de raquel ao máximo
+
+while not is_gameover(raquel, troll):
+    attack(raquel, troll)
+    raquel["attack"] -= 1
+    print("Ataque da Raquel reduzido!")
+
+    if troll["hp"] > 0:
+        attack(troll, raquel)
+
+raquel["gold"] += troll["gold"]
+raquel["attack"] = raquel["max_attack"]
+print("Ataque da Raquel restaurado")
 
 
 # Nível 5 - Raquel vs Diogo (Raquel agora tem o spell de cura)
