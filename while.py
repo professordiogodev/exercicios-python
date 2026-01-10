@@ -1,59 +1,36 @@
 # Criar outros monstros e fazer a raquel combater cada um deles
 # Obs. No final de cada nível, acrescentar o gold dos inimigos derrotados à Raquel
 
-diogo = {
-    "name": "Diogo",
-    "hp": 60,
-    "attack": 3
-}
+# Trabalho a Seguir - Tentar Implementar Pontos de Experiência e Níveis
+experiencia_por_nivel = [50, 100, 200, 400, 800, 1600]
 
-raquel = {
-    "name": "Raquel",
-    "hp": 50,
-    "max_hp": 50,
-    "attack": 4,
-    "max_attack": 4,
-    "gold": 0
-}
+#                        1,  2,   3,   4,   5,   6
+#  (só que no array ->)  0,  1,   2,   3,   4,   5
 
-slime = {
-    "name": "Slime",
-    "hp": 10,
-    "attack": 2,
-    "gold": 5
-}
+# Tou no nível 2 - preciso de 100xp
+# if raquel["xp"] > experiencia_por_nivel[nivel - 1]:
+#   subir_nivel(raquel)
 
-pixie = {
-    "name": "Pixie",
-    "hp": 20,
-    "attack": 3,
-    "gold": 7
-}
+def subir_nivel(player):
+    # Restaurar Pontos de Vida
+    player["hp"] = player["max_hp"]
+    player["max_attack"] += 1
+    player["attack"] += 1
 
-goblin = {
-    "name": "Goblin",
-    "hp": 30,
-    "attack": 4,
-    "gold": 10
-}
-
-troll = {
-    "name": "Troll",
-    "hp": 50,
-    "attack": 6,
-    "gold": 20
-}
-
-# ... outros monstros ...
-
-def attack(source, target):
+# Função de Atacar
+def attack(source, target, is_critical = False):
     src = source["name"]
     trgt = target["name"]
 
-    target["hp"] -= source["attack"]
-    print(f"{src} atacou {trgt} que ficou com {target['hp']} pontos de vida!")
-
-
+    if not is_critical:
+        target["hp"] -= source["attack"]
+        print(f"{src} atacou {trgt} que ficou com {target['hp']} pontos de vida!")
+    else:
+        # Ataque crítico
+        target["hp"] -= source["attack"] * 2
+        print(f"CRITICO - {src} atacou {trgt} que ficou com {target['hp']} pontos de vida!")
+        
+# Função de GameOver
 def is_gameover(player1, player2):
 
     p1 = player1["name"]
@@ -72,76 +49,129 @@ def is_gameover(player1, player2):
         print(p2 + " Defeated!")
         return True
     else:
-        print("O jogo continua... (ambos vivos)")
+        # O jogo continua... (ambos vivos)
         return False
 
 
+def raquel_attack(origin, target):
+    attack(origin, target)
+    # Habilidade da Raquel - Curar-se 1 ponto de vida a cada ataque
+    print(f"{origin["name"]} curou-se 1 hp!")
+    origin["hp"] += 1
 
-# Nível 1
-while not is_gameover(raquel, slime):
-    attack(raquel, slime)
-    attack(slime, raquel)
+raquel = {
+    "name": "Raquel",
+    "hp": 50,
+    "max_hp": 50,
+    "attack": 4,
+    "max_attack": 4,
+    "gold": 0,
+    "nivel": 1,
+    "attack_logic": raquel_attack
+}
 
-# Nível 2
-# A pixie cura-se 2 se tiver menos de 5 pontos de vida
-while not is_gameover(raquel, pixie):
-    attack(raquel, pixie)
+def slime_attack(origin, target):
+    attack(origin, target)
 
-    # Lógica? não é só atacar...
-    attack(pixie, raquel)
+slime = {
+    "name": "Slime",
+    "hp": 10,
+    "attack": 2,
+    "gold": 5,
+    "attack_logic": slime_attack
+}
 
-    if pixie["hp"] < 5:
-            pixie["hp"] += 2
-            print("Pixie curou-se +2 HP")
+def pixie_attack(origin, target):
+    if origin["hp"] < 5:
+        origin["hp"] += 2
+        print(f"{origin["name"]} curou-se +2 HP")
+    else:
+        attack(origin, target)
 
-raquel["gold"] += pixie["gold"]
-print("Gold de Raquel:", raquel["gold"])
+pixie = {
+    "name": "Pixie",
+    "hp": 20,
+    "attack": 3,
+    "gold": 7,
+    "attack_logic": pixie_attack
+}
 
-# Nível 3
-# Raquel vs Goblin
-# O goblin dá ataque crítico a cada dois turnos
+goblin_has_critical = False
 
-while not is_gameover(raquel, goblin):
-    attack(raquel, goblin)
+def goblin_attack(origin, target):
 
-    raquel["gold"] += goblin["gold"]
+    global goblin_has_critical
 
-
-# No fim do Nível 3, recuperar a vida da Raquel para nível máximo e subir de nível (+1 atk, +5 hp)
-
-raquel["max_hp"] += 5
-raquel["attack"] += 1
-raquel["max_attack"] = raquel["attack"]
-raquel["hp"] = raquel["max_hp"]
-
-print("Raquel subiu de nível!")
-
-# Nível 4
-# Raquel vs Troll
-# O Troll reduz o ataque de raquel em 1 a cada turno
-# No final da luta, não esquecer de retornar o ataque de raquel ao máximo
-
-while not is_gameover(raquel, troll):
-    attack(raquel, troll)
-    raquel["attack"] -= 1
-    print("Ataque da Raquel reduzido!")
-
-    if troll["hp"] > 0:
-        attack(troll, raquel)
-
-raquel["gold"] += troll["gold"]
-raquel["attack"] = raquel["max_attack"]
-print("Ataque da Raquel restaurado")
-
-
-# Nível 5 - Raquel vs Diogo (Raquel agora tem o spell de cura)
-# while not is_gameover(diogo, raquel):
-#     # Turno do Diogo - diogo ataca raquel
-#     attack(diogo, raquel)
-
-#     # Turno da Raquel - raquel ataca diogo
-#     if raquel["hp"] < 20:
-#         raquel["hp"] += 100
-#     else:
-#         attack(raquel, diogo)
+    attack(origin, target, goblin_has_critical)
     
+    if not goblin_has_critical:
+        # Passar a ter crítico no turno a seguir
+        goblin_has_critical = True
+    else:
+        # Tem crítico - passa a não ter no turno a seguir
+        goblin_has_critical = False
+
+goblin = {
+    "name": "Goblin",
+    "hp": 15,
+    "attack": 3,
+    "gold": 10,
+    "has_critical": False,
+    "attack_logic": goblin_attack
+}
+
+def troll_attack(origin, target):
+    attack(origin, target)
+    target["attack"] -= 1
+    print(f"{target["name"]} lost 1 Attack Point!")
+
+troll = {
+    "name": "Troll",
+    "hp": 50,
+    "attack": 6,
+    "gold": 20,
+    "attack_logic": troll_attack
+}
+
+monsters = [slime, pixie, goblin, troll]
+
+for monster in monsters:
+    while not is_gameover(raquel, monster):
+
+        while True:
+            print(f"Monstro {monster["name"]} vai atacar!")
+            print("O que vai Raquel fazer?")
+            print("a) Atacar")
+            print("b) Curar-se")
+            print("c) Spell")
+            opção = input("Opção > ")
+            if opção == "a":
+                print("Raquel ataca")
+                raquel["attack_logic"](raquel, monster)
+                break
+            elif opção == "b":
+                print("Raquel cura")
+                # raquel["heal"] <- Falta Implementar !!!!
+                break
+            elif opção == "c":
+                print("Raquel spell")
+                # raquel["spell"] <- Falta Implementar !!!!!!!!
+                break
+            
+
+        monster["attack_logic"](monster, raquel)
+        print("-- Turn End -- \n")
+
+    print("\n -- BATTLE END -- \n")
+
+
+# Criar um monstro Tomato, se tiver menos de 5 hp, explode (morre e tira 20hp)
+
+
+# Dar a possibilidade da Raquel:
+# a. Atacar
+# b. Curar-se
+# c. Usar Spell
+
+
+# Depois de cada luta, Raquel recupera 5hp.
