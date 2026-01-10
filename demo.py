@@ -24,3 +24,4 @@ for letra in nome:
 for nome in nomes:
     for letra in nome:
         print(letra)
+
