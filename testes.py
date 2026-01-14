@@ -4,55 +4,43 @@ raquel = {
     "current_monster": "Goblin"
 }
 
-#minha_lista = [raquel_hp, raquel_attack, current_monster]
- 
-# Outro Ficheiro - Save Game (save.txt)
 
-def save(raquel):
+def save():
 
-    with open("save.txt", "w") as f:
+    # Verificar se o ficheiro existe
+    # Caso não exista, criá-lo
 
-        f.write(f"{raquel["hp"]}")
-        f.write(f"{raquel["attack"]}")
-        f.write(f"{raquel["current_monster"]}")
+    with open("senha.txt", "w") as f:
+
+        senha = input("Introduza a senha")
+        f.write(senha)
+        
+
+def load():
+
+    with open("senha.txt") as f:
+
+        print("A senha é ", f.read())
+
     
-        print("Game Saved!")
-
-def load(raquel):
-
-    with open("save.txt") as f:
-
-        save_values = []
-
-        for line in f:
-            
-            value = line.strip()
-            save_values.append(value)
-
-        print(save_values)
-        raquel["hp"] = save_values[0]
-        raquel["attack"] = save_values[1]
-        raquel["current_monster"] = save_values[2]
-
-        print("Game Loaded!")
-
-
-load(raquel)
 
 
 
 while True:
 
     print("Indica o que queres fazer")
-    print("a) balblabla")
+    print("a) Guardar Senha")
+    print("b) Ver Senha")
+    print("c) Sair")
 
     opcao = input("Opção > ")
 
     if opcao == "a":
-        ler()
-        break
+        save()
     elif opcao == "b":
-        escrever()
+        load()
+    elif opcao == "c":
+        print("Xauxauuuu")
         break
     else:
         print("Opção inválida")
