@@ -59,3 +59,20 @@ while True:
         
     # Linha de intervalo
     print()
+
+
+
+
+
+
+
+
+nums = [1,2,3]
+
+soma = 0
+
+for num in nums:
+    soma += num
+
+media = soma / len(nums)
+
