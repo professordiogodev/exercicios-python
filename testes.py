@@ -1,3 +1,5 @@
+import os
+
 raquel = {
     "hp": 40,
     "attack": 6,
@@ -7,23 +9,29 @@ raquel = {
 
 def save():
 
-    # Verificar se o ficheiro existe
-    # Caso não exista, criá-lo
-
     with open("senha.txt", "w") as f:
-
         senha = input("Introduza a senha")
         f.write(senha)
-        
+    
 
 def load():
 
-    with open("senha.txt") as f:
+    # Antes de ler, ver se o ficheiro existe
+    if os.path.exists("senha.txt"):
 
-        print("A senha é ", f.read())
+        with open("senha.txt") as f:
 
-    
+            print("A senha é ", f.read())
 
+    else:
+        print("Sumimasen, o ficheiro não existe.")
+
+def erase():
+    if os.path.exists("senha.txt"):
+        os.remove("senha.txt")
+        print("Senha super apagada!!!!")
+    else:
+        print("Já estava apagado.")
 
 
 while True:
@@ -31,7 +39,8 @@ while True:
     print("Indica o que queres fazer")
     print("a) Guardar Senha")
     print("b) Ver Senha")
-    print("c) Sair")
+    print("c) Apagar Senha")
+    print("d) Sair")
 
     opcao = input("Opção > ")
 
@@ -40,10 +49,13 @@ while True:
     elif opcao == "b":
         load()
     elif opcao == "c":
+        erase()
+    elif opcao == "d":
         print("Xauxauuuu")
         break
     else:
         print("Opção inválida")
         break
         
-
+    # Linha de intervalo
+    print()
